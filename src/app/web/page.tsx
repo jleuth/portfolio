@@ -3,119 +3,158 @@ import ContentPage from "@/components/ContentPage";
 export default function WebPage() {
   return (
     <ContentPage 
-      title="Vue.js"
-      subtitle="The progressive JavaScript framework for building user interfaces"
+      title="Web"
+      subtitle="Experimental projects and creative technology"
     >
       <div className="font-karla text-gray-900 space-y-8">
         <section>
           <h2 className="font-instrument text-3xl text-black mb-6">Overview</h2>
           <p className="text-lg leading-relaxed mb-6">
-            Vue.js is an approachable, performant, and versatile framework for building web user 
-            interfaces. Created by Evan You, Vue is designed to be incrementally adoptable, meaning 
-            you can use as little or as much of Vue as you need. Its gentle learning curve and 
-            excellent documentation make it accessible to developers of all skill levels.
+            Some of my projects don't fit into a category, and they end up here. A smorgasbord of 
+            really cool, barely functional, incredibly experimental projects that were a lot of fun 
+            to make.
           </p>
           <p className="text-lg leading-relaxed">
-            Vue&apos;s reactive data binding system automatically updates the DOM when your application 
-            state changes. The framework combines the best features of React and Angular while 
-            maintaining simplicity and flexibility. Vue 3&apos;s Composition API provides powerful 
-            tools for organizing and reusing logic across components.
+            This is a non-exhaustive list (that will not be updated, I clearly won't remember) of 
+            various web projects that showcase different aspects of my interests in technology, 
+            research, and creative problem-solving.
           </p>
         </section>
 
         <section>
-          <h2 className="font-instrument text-3xl text-black mb-6">Key Strengths</h2>
-          <ul className="space-y-3 text-lg">
-            <li className="flex items-start">
-              <span className="text-2xl mr-3">•</span>
-              <span><strong>Progressive Framework:</strong> Can be adopted incrementally, from a simple library to a full framework</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-2xl mr-3">•</span>
-              <span><strong>Gentle Learning Curve:</strong> Easy to learn with excellent documentation and tutorials</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-2xl mr-3">•</span>
-              <span><strong>Reactive Data Binding:</strong> Automatic UI updates when data changes</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-2xl mr-3">•</span>
-              <span><strong>Component-Based:</strong> Encapsulated, reusable components with scoped styling</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-2xl mr-3">•</span>
-              <span><strong>Flexible Architecture:</strong> Works well for both simple projects and complex applications</span>
-            </li>
-          </ul>
+          <h2 className="font-instrument text-3xl text-black mb-6">Featured Projects</h2>
+          
+          <div className="space-y-8">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="font-instrument text-2xl mb-3">The Great AI Debate</h3>
+              <p className="text-lg leading-relaxed mb-4">
+                A research project and weeklong event where a bunch of LLMs duke it out gladiator-style 
+                over hundreds of different topics and categories which thousands watch then have at it. 
+                The idea is to see how LLMs handle debating each other, and biases in their training.
+              </p>
+              <a 
+                href="https://greatdebate.live" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                greatdebate.live
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="font-instrument text-2xl mb-3">SuperWallClock</h3>
+              <p className="text-lg leading-relaxed">
+                A Spotify-enabled wall clock I made with an old monitor and a Pi Zero. It was entirely 
+                client-based, so it never relied on a central server to call back to. It showed local 
+                weather, currently playing song, UptimeRobot status of my various sites, and, of course, 
+                the time!
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="font-instrument text-2xl mb-3">DIY SlimeVR Trackers</h3>
+              <p className="text-lg leading-relaxed">
+                I designed and soldered together a full set of open-source SlimeVR trackers. Due to 
+                AliExpress' absolutely nonexistent quality assurance, every IMU I got was absolutely 
+                destroyed by drift, and never worked right. But, I got to learn a lot about CAD (and 
+                I think this was my first full soldering project).
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="font-instrument text-2xl mb-3">Sparse Fusion</h3>
+              <p className="text-lg leading-relaxed">
+                This research project was a concept for a lightweight Mixture of Experts architecture 
+                designed to run high-quality AI on low-resource devices. It used a classifier to route 
+                inputs to small, specialized LoRA adapters, then fused their outputs for intelligent, 
+                domain-aware responses, all without ever touching a GPU cluster. I never built it when 
+                I finished the research and design, but the idea still reflects my obsession with making 
+                powerful models run stupidly well on everyday hardware.
+              </p>
+            </div>
+          </div>
         </section>
 
         <section>
-          <h2 className="font-instrument text-3xl text-black mb-6">My Experience</h2>
-          <p className="text-lg leading-relaxed mb-6">
-            I&apos;ve been working with Vue.js for 3 years, initially drawn to its simplicity and 
-            excellent developer experience. I&apos;ve built numerous applications ranging from simple 
-            dashboards to complex SPAs with Vue 2 and Vue 3, leveraging both the Options API and 
-            the newer Composition API.
-          </p>
-          <p className="text-lg leading-relaxed">
-            My Vue expertise includes state management with Vuex and Pinia, routing with Vue Router, 
-            building custom components, and integrating with various UI libraries. I particularly 
-            enjoy Vue&apos;s single-file components and the seamless development experience provided 
-            by the Vue ecosystem.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="font-instrument text-3xl text-black mb-6">Vue 3 Features</h2>
+          <h2 className="font-instrument text-3xl text-black mb-6">Project Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-base">
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="font-instrument text-xl mb-3">Composition API</h3>
+              <h3 className="font-instrument text-xl mb-3">Research & AI</h3>
               <ul className="space-y-2">
-                <li>• ref, reactive, computed</li>
-                <li>• watch, watchEffect</li>
-                <li>• Custom composition functions</li>
-                <li>• Better TypeScript support</li>
+                <li>• LLM behavior analysis</li>
+                <li>• Efficient AI architectures</li>
+                <li>• Edge computing solutions</li>
+                <li>• Machine learning experiments</li>
               </ul>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="font-instrument text-xl mb-3">Performance</h3>
+              <h3 className="font-instrument text-xl mb-3">Hardware & IoT</h3>
               <ul className="space-y-2">
-                <li>• Proxy-based reactivity</li>
-                <li>• Tree-shaking support</li>
-                <li>• Multiple root elements</li>
-                <li>• Suspense component</li>
+                <li>• Raspberry Pi projects</li>
+                <li>• Custom hardware builds</li>
+                <li>• Soldering and electronics</li>
+                <li>• DIY motion tracking</li>
               </ul>
             </div>
           </div>
         </section>
 
         <section>
-          <h2 className="font-instrument text-3xl text-black mb-6">Ecosystem & Tools</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-base">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>Core Tools</strong><br />
-              Vue CLI, Vite, Vue DevTools
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>State Management</strong><br />
-              Vuex, Pinia, VueUse
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>Routing</strong><br />
-              Vue Router, Nuxt.js
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>UI Libraries</strong><br />
-              Vuetify, Quasar, Element Plus
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>Testing</strong><br />
-              Vue Test Utils, Cypress
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>Meta Frameworks</strong><br />
-              Nuxt.js, VitePress, Gridsome
-            </div>
+          <h2 className="font-instrument text-3xl text-black mb-6">Project Philosophy</h2>
+          <p className="text-lg leading-relaxed mb-6">
+            These projects represent pure experimentation and learning. They're not polished products 
+            or commercial ventures, but rather explorations of interesting technical challenges and 
+            creative ideas.
+          </p>
+          <p className="text-lg leading-relaxed">
+            The "barely functional" nature is intentional - these are proof-of-concepts and learning 
+            exercises that prioritize exploration over perfection. Each project taught me something 
+            new or satisfied a particular curiosity.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-instrument text-3xl text-black mb-6">Technical Interests</h2>
+          <ul className="space-y-3 text-lg">
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">•</span>
+              <span><strong>Edge AI:</strong> Running powerful models on resource-constrained hardware</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">•</span>
+              <span><strong>Creative Hardware:</strong> Repurposing old technology for new applications</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">•</span>
+              <span><strong>Distributed Systems:</strong> Client-side applications that don't rely on servers</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">•</span>
+              <span><strong>Open Source:</strong> Building on and contributing to community projects</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">•</span>
+              <span><strong>Research Implementation:</strong> Turning theoretical concepts into working prototypes</span>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="font-instrument text-3xl text-black mb-6">The Joy of Experimentation</h2>
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <p className="text-lg leading-relaxed mb-4">
+              These projects capture the pure joy of building things just to see if they can be built. 
+              They're messy, incomplete, and sometimes frustrating, but they represent the kind of 
+              curiosity-driven work that keeps technology interesting.
+            </p>
+            <p className="text-lg leading-relaxed italic">
+              "A smorgasbord of really cool, barely functional, incredibly experimental projects that 
+              were a lot of fun to make."
+            </p>
           </div>
         </section>
       </div>

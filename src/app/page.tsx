@@ -3,33 +3,39 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   const cards = [
     { 
       label: "Fr", 
       info: "Frantic - A creative technology company I founded and ran",
-      slug: "frantic"
+      slug: "frantic",
+      icon: "/frantic-icon.svg"
     },
     { 
       label: "Fu", 
       info: "Future Computing - Nonprofit organization I currently run",
-      slug: "future-computing"
+      slug: "future-computing",
+      icon: "/future-computing-icon.svg"
     },
     { 
       label: "Fi", 
       info: "Film - My film projects and creative video work",
-      slug: "film"
+      slug: "film",
+      icon: "/film-icon.svg"
     },
     { 
       label: "Yt", 
       info: "YouTube - My YouTube channel and video content",
-      slug: "youtube"
+      slug: "youtube",
+      icon: "/youtube-icon.svg"
     },
     { 
       label: "We", 
       info: "Web - Other web projects and development work I've done",
-      slug: "web"
+      slug: "web",
+      icon: "/web-icon.svg"
     },
   ];
 
@@ -123,7 +129,7 @@ export default function Home() {
       </button>
 
       <div className="flex-1 flex flex-col justify-center items-center">
-        <div className={`font-instrument mb-4 ${size === "large" ? "text-3xl" : "text-2xl"}`}>{card.label}</div>
+        <div className={`font-instrument mb-4 ${size === "large" ? "text-3xl" : "text-2xl"}`}>{card.name}</div>
         <div className={`font-karla text-center leading-relaxed mb-5 ${size === "large" ? "text-base" : "text-sm"}`}>
           {card.info}
         </div>
@@ -178,10 +184,14 @@ export default function Home() {
                 </div>
                 
                 <div className="flex-1 flex items-center justify-center">
-                  <div className="w-28 h-28 bg-gray-200 rounded flex items-center justify-center">
-                    <svg width="56" height="56" viewBox="0 0 56 56" className="text-gray-800">
-                      <rect width="56" height="56" fill="currentColor" opacity="0.3"/>
-                    </svg>
+                  <div className="w-28 h-28 flex items-center justify-center">
+                    <Image 
+                      src={card.icon} 
+                      alt={`${card.label} icon`} 
+                      width={112} 
+                      height={112} 
+                      className="w-28 h-28 object-contain"
+                    />
                   </div>
                 </div>
                 
@@ -223,10 +233,14 @@ export default function Home() {
               }`}>
                 <div className="font-instrument text-xl text-black">{card.label}</div>
                 <div className="flex-1 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-gray-200 rounded flex items-center justify-center">
-                    <svg width="48" height="48" viewBox="0 0 48 48" className="text-gray-800">
-                      <rect width="48" height="48" fill="currentColor" opacity="0.3"/>
-                    </svg>
+                  <div className="w-24 h-24 flex items-center justify-center">
+                    <Image 
+                      src={card.icon} 
+                      alt={`${card.label} icon`} 
+                      width={96} 
+                      height={96} 
+                      className="w-24 h-24 object-contain"
+                    />
                   </div>
                 </div>
                 <div className="self-end font-instrument text-lg italic transform rotate-180 text-black">
@@ -261,10 +275,14 @@ export default function Home() {
               }`}>
                 <div className="font-instrument text-xl text-black">{cards[4].label}</div>
                 <div className="flex-1 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-gray-200 rounded flex items-center justify-center">
-                    <svg width="48" height="48" viewBox="0 0 48 48" className="text-gray-800">
-                      <rect width="48" height="48" fill="currentColor" opacity="0.3"/>
-                    </svg>
+                  <div className="w-24 h-24 flex items-center justify-center">
+                    <Image 
+                      src={cards[4].icon} 
+                      alt={`${cards[4].label} icon`} 
+                      width={96} 
+                      height={96} 
+                      className="w-24 h-24 object-contain"
+                    />
                   </div>
                 </div>
                 <div className="self-end font-instrument text-lg italic transform rotate-180 text-black">
@@ -304,10 +322,14 @@ export default function Home() {
               }`}>
                 <div className="font-instrument text-xl text-black">{card.label}</div>
                 <div className="flex-1 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-gray-200 rounded flex items-center justify-center">
-                    <svg width="48" height="48" viewBox="0 0 48 48" className="text-gray-800">
-                      <rect width="48" height="48" fill="currentColor" opacity="0.3"/>
-                    </svg>
+                  <div className="w-24 h-24 flex items-center justify-center">
+                    <Image 
+                      src={card.icon} 
+                      alt={`${card.label} icon`} 
+                      width={96} 
+                      height={96} 
+                      className="w-24 h-24 object-contain"
+                    />
                   </div>
                 </div>
                 <div className="self-end font-instrument text-lg italic transform rotate-180 text-black">

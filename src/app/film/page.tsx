@@ -3,118 +3,115 @@ import ContentPage from "@/components/ContentPage";
 export default function FilmPage() {
   return (
     <ContentPage 
-      title="React"
-      subtitle="A JavaScript library for building user interfaces"
+      title="Film"
+      subtitle="Creative projects and visual storytelling"
     >
       <div className="font-karla text-gray-900 space-y-8">
         <section>
           <h2 className="font-instrument text-3xl text-black mb-6">Overview</h2>
           <p className="text-lg leading-relaxed mb-6">
-            React is a declarative, efficient, and flexible JavaScript library for building user 
-            interfaces. Developed by Facebook, it enables developers to create complex UIs from 
-            small, isolated pieces of code called components. React&apos;s component-based architecture 
-            promotes reusability and maintainability.
+            I occasionally do film and design projects when I get a creative burst. Film, design, and 
+            other art is how I make sense of the world. Where work fails, I turn to writing, designing, 
+            and storytelling.
           </p>
           <p className="text-lg leading-relaxed">
-            The library&apos;s virtual DOM implementation provides excellent performance by minimizing 
-            expensive DOM manipulations. React&apos;s unidirectional data flow makes applications more 
-            predictable and easier to debug, while its extensive ecosystem provides solutions for 
-            routing, state management, and testing.
+            Art is the one place where I get to be as inconsistent, imperfect, and ugly as I want to be, 
+            and that's what makes it so fun. A lot of that work blends pretty visuals with introspection, 
+            and express some sort of larger meaning. Some pieces are quiet, some are chaotic, and most 
+            live in-between.
           </p>
         </section>
 
         <section>
-          <h2 className="font-instrument text-3xl text-black mb-6">Core Concepts</h2>
+          <h2 className="font-instrument text-3xl text-black mb-6">Creative Philosophy</h2>
+          <p className="text-lg leading-relaxed mb-6">
+            I find art to be a very intimate thing, so 99% of what I do never gets released, and that's 
+            alright. Sometimes it's posters, sometimes it's album covers, sometimes it's political jabs, 
+            sometimes it's UI/UX mockups for a totally fake thing.
+          </p>
+          <p className="text-lg leading-relaxed">
+            It's more than side-work, it's part of my thought process. Never scheduled. Always bouncing 
+            around. Art allows me to explore ideas and emotions that don't fit into the structured world 
+            of technology and business.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-instrument text-3xl text-black mb-6">Types of Work</h2>
           <ul className="space-y-3 text-lg">
             <li className="flex items-start">
               <span className="text-2xl mr-3">•</span>
-              <span><strong>Components:</strong> Encapsulated, reusable pieces of UI that manage their own state</span>
+              <span><strong>Poster Design:</strong> Visual communication and artistic expression through print media</span>
             </li>
             <li className="flex items-start">
               <span className="text-2xl mr-3">•</span>
-              <span><strong>JSX:</strong> Syntax extension that allows writing HTML-like code in JavaScript</span>
+              <span><strong>Album Covers:</strong> Music-inspired artwork that captures sound in visual form</span>
             </li>
             <li className="flex items-start">
               <span className="text-2xl mr-3">•</span>
-              <span><strong>Virtual DOM:</strong> In-memory representation of real DOM for efficient updates</span>
+              <span><strong>Political Commentary:</strong> Visual statements on current events and social issues</span>
             </li>
             <li className="flex items-start">
               <span className="text-2xl mr-3">•</span>
-              <span><strong>Hooks:</strong> Functions that let you use state and lifecycle features in functional components</span>
+              <span><strong>UI/UX Mockups:</strong> Interface designs for imaginary products and concepts</span>
             </li>
             <li className="flex items-start">
               <span className="text-2xl mr-3">•</span>
-              <span><strong>One-Way Data Flow:</strong> Data flows down from parent to child components</span>
+              <span><strong>Film Projects:</strong> Video content that blends narrative with visual experimentation</span>
             </li>
           </ul>
         </section>
 
         <section>
-          <h2 className="font-instrument text-3xl text-black mb-6">My Experience</h2>
-          <p className="text-lg leading-relaxed mb-6">
-            I&apos;ve been developing with React for over 4 years, starting with class components and 
-            transitioning to modern functional components with hooks. I&apos;ve built everything from 
-            simple landing pages to complex enterprise applications with hundreds of components.
-          </p>
-          <p className="text-lg leading-relaxed">
-            My expertise includes performance optimization, custom hook development, state management 
-            with Context and external libraries, and building accessible, responsive user interfaces. 
-            I&apos;m also experienced with React&apos;s ecosystem including Next.js, testing libraries, and 
-            development tools.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="font-instrument text-3xl text-black mb-6">Modern React Patterns</h2>
+          <h2 className="font-instrument text-3xl text-black mb-6">Creative Spectrum</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-base">
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="font-instrument text-xl mb-3">Hooks I Master</h3>
+              <h3 className="font-instrument text-xl mb-3">Quiet Pieces</h3>
               <ul className="space-y-2">
-                <li>• useState, useEffect, useContext</li>
-                <li>• useReducer, useMemo, useCallback</li>
-                <li>• useRef, useImperativeHandle</li>
-                <li>• Custom Hooks for reusable logic</li>
+                <li>• Minimalist compositions</li>
+                <li>• Subtle emotional narratives</li>
+                <li>• Contemplative visuals</li>
+                <li>• Introspective themes</li>
               </ul>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="font-instrument text-xl mb-3">Advanced Patterns</h3>
+              <h3 className="font-instrument text-xl mb-3">Chaotic Pieces</h3>
               <ul className="space-y-2">
-                <li>• Compound Components</li>
-                <li>• Render Props and HOCs</li>
-                <li>• Context for State Management</li>
-                <li>• Error Boundaries</li>
+                <li>• Bold visual statements</li>
+                <li>• Experimental techniques</li>
+                <li>• High-energy compositions</li>
+                <li>• Provocative messaging</li>
               </ul>
             </div>
           </div>
         </section>
 
         <section>
-          <h2 className="font-instrument text-3xl text-black mb-6">Ecosystem & Tools</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-base">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>Frameworks</strong><br />
-              Next.js, Gatsby, Remix
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>State Management</strong><br />
-              Redux, Zustand, Jotai
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>Styling</strong><br />
-              Styled-components, Emotion, Tailwind
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>Testing</strong><br />
-              React Testing Library, Jest
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>UI Libraries</strong><br />
-              Material-UI, Chakra UI, Ant Design
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <strong>Dev Tools</strong><br />
-              React DevTools, Storybook
-            </div>
+          <h2 className="font-instrument text-3xl text-black mb-6">The Process</h2>
+          <p className="text-lg leading-relaxed mb-6">
+            Creative work happens when inspiration strikes, not on a schedule. This organic approach 
+            allows for authentic expression without the constraints of deadlines or client expectations. 
+            The freedom to create without external pressure is what makes this work so valuable to me.
+          </p>
+          <p className="text-lg leading-relaxed">
+            Most projects remain private because they're deeply personal explorations rather than 
+            commercial endeavors. The act of creating is often more important than sharing the final 
+            result.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-instrument text-3xl text-black mb-6">Why Art Matters</h2>
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <p className="text-lg leading-relaxed mb-4">
+              Art serves as a counterbalance to the technical and business-focused aspects of my work. 
+              It's where I can embrace imperfection, explore emotions, and communicate ideas that don't 
+              fit into code or spreadsheets.
+            </p>
+            <p className="text-lg leading-relaxed italic">
+              "Art is the one place where I get to be as inconsistent, imperfect, and ugly as I want 
+              to be, and that's what makes it so fun."
+            </p>
           </div>
         </section>
       </div>
