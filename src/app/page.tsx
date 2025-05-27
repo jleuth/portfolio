@@ -24,7 +24,7 @@ export default function Home() {
     { 
       label: "Fi", 
       name: "Film",
-      info: "Film - My film projects and creative video work",
+      info: "Film - My film projects and creative art work",
       slug: "film",
       icon: "/film-icon.svg"
     },
