@@ -10,7 +10,7 @@ export default function Home() {
     { 
       label: "Fr", 
       name: "Frantic",
-      info: "Frantic - A creative technology company I founded and ran",
+      info: "Frantic - An I.T. infra management company I founded and ran",
       slug: "frantic",
       icon: "/frantic-icon.svg"
     },
