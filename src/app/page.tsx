@@ -9,30 +9,35 @@ export default function Home() {
   const cards = [
     { 
       label: "Fr", 
+      name: "Frantic",
       info: "Frantic - A creative technology company I founded and ran",
       slug: "frantic",
       icon: "/frantic-icon.svg"
     },
     { 
       label: "Fu", 
+      name: "Future Computing",
       info: "Future Computing - Nonprofit organization I currently run",
       slug: "future-computing",
       icon: "/future-computing-icon.svg"
     },
     { 
       label: "Fi", 
+      name: "Film",
       info: "Film - My film projects and creative video work",
       slug: "film",
       icon: "/film-icon.svg"
     },
     { 
       label: "Yt", 
+      name: "YouTube",
       info: "YouTube - My YouTube channel and video content",
       slug: "youtube",
       icon: "/youtube-icon.svg"
     },
     { 
       label: "We", 
+      name: "Web",
       info: "Web - Other web projects and development work I've done",
       slug: "web",
       icon: "/web-icon.svg"
