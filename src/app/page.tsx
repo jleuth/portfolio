@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -34,9 +34,15 @@ export default function Home() {
   ];
 
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
+  const [isHoveringButton, setIsHoveringButton] = useState(false);
   const hasFlippedCard = flippedCards.size > 0;
 
   const toggleCard = (index: number) => {
+    // Don't allow flipping if another card is already flipped
+    if (hasFlippedCard && !flippedCards.has(index)) {
+      return;
+    }
+    
     const newFlippedCards = new Set(flippedCards);
     if (newFlippedCards.has(index)) {
       newFlippedCards.delete(index);
@@ -98,10 +104,24 @@ export default function Home() {
     return "initial";
   };
 
-  const CardBack = ({ card, size = "large" }: { card: any, size?: "large" | "small" }) => (
-    <div className={`absolute inset-0 bg-gray-900 text-white rounded-lg border border-black/[0.125] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between items-center backface-hidden rotate-y-180 ${
-      size === "large" ? "p-5" : "p-4"
-    }`}>
+  const CardBack = ({ card, size = "large", onClose }: { card: typeof cards[0], size?: "small" | "large", onClose: () => void }) => (
+    <div 
+      className={`absolute inset-0 bg-gray-900 text-white rounded-lg border border-black/[0.125] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between items-center backface-hidden rotate-y-180 ${size === "large" ? "p-5" : "p-4"}`}
+      onClick={(e) => e.stopPropagation()} // Prevent card from closing when clicking on the card itself
+    >
+      {/* X Close Button */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        className="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+
       <div className="flex-1 flex flex-col justify-center items-center">
         <div className={`font-instrument mb-4 ${size === "large" ? "text-3xl" : "text-2xl"}`}>{card.label}</div>
         <div className={`font-karla text-center leading-relaxed mb-5 ${size === "large" ? "text-base" : "text-sm"}`}>
@@ -121,19 +141,8 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-10 bg-white text-black relative">
-      {/* Backdrop Overlay */}
-      <AnimatePresence>
-        {hasFlippedCard && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/30 z-40"
-            onClick={() => setFlippedCards(new Set())}
-          />
-        )}
-      </AnimatePresence>
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-[#F8F8F8] overflow-hidden relative">
+      {/* Remove the AnimatePresence and backdrop overlay entirely */}
 
       {/* Playing Cards */}
       <div className="flex flex-wrap justify-center items-center mb-16 md:mb-20 relative z-10">
@@ -154,7 +163,8 @@ export default function Home() {
               style={{ 
                 marginLeft: index > 0 ? '-36px' : '0',
                 transformStyle: 'preserve-3d',
-                zIndex: flippedCards.has(index) ? 50 : 10,
+                zIndex: flippedCards.has(index) ? 100 : 1,
+                position: flippedCards.has(index) ? 'relative' : 'static',
               }}
             >
               {/* Front of card */}
@@ -180,7 +190,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <CardBack card={card} size="large" />
+              <CardBack card={card} size="large" onClose={() => toggleCard(index)} />
             </motion.div>
           ))}
         </div>
@@ -201,7 +211,8 @@ export default function Home() {
               }`}
               style={{ 
                 transformStyle: 'preserve-3d',
-                zIndex: flippedCards.has(index) ? 50 : 10,
+                zIndex: flippedCards.has(index) ? 100 : 1,
+                position: flippedCards.has(index) ? 'relative' : 'static',
               }}
             >
               {/* Front */}
@@ -222,7 +233,7 @@ export default function Home() {
                   {card.label}
                 </div>
               </div>
-              <CardBack card={card} size="small" />
+              <CardBack card={card} size="small" onClose={() => toggleCard(index)} />
             </motion.div>
           ))}
           <div className="col-span-2 flex justify-center">
@@ -238,7 +249,8 @@ export default function Home() {
               }`}
               style={{ 
                 transformStyle: 'preserve-3d',
-                zIndex: flippedCards.has(4) ? 50 : 10,
+                zIndex: flippedCards.has(4) ? 100 : 1,
+                position: flippedCards.has(4) ? 'relative' : 'static',
               }}
             >
               {/* Front */}
@@ -259,7 +271,7 @@ export default function Home() {
                   {cards[4].label}
                 </div>
               </div>
-              <CardBack card={cards[4]} size="small" />
+              <CardBack card={cards[4]} size="small" onClose={() => toggleCard(4)} />
             </motion.div>
           </div>
         </div>
@@ -280,7 +292,8 @@ export default function Home() {
               }`}
               style={{ 
                 transformStyle: 'preserve-3d',
-                zIndex: flippedCards.has(index) ? 50 : 10,
+                zIndex: flippedCards.has(index) ? 100 : 1,
+                position: flippedCards.has(index) ? 'relative' : 'static',
               }}
             >
               {/* Front */}
@@ -301,7 +314,7 @@ export default function Home() {
                   {card.label}
                 </div>
               </div>
-              <CardBack card={card} size="small" />
+              <CardBack card={card} size="small" onClose={() => toggleCard(index)} />
             </motion.div>
           ))}
         </div>
@@ -343,6 +356,6 @@ export default function Home() {
           </button>
         </div>
       </motion.div>
-    </div>
+    </main>
   );
 }
