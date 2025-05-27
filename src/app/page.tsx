@@ -376,7 +376,9 @@ export default function Home() {
             My Friends
           </button>
           <button className="font-karla text-xl font-normal bg-[#4633FF] text-white px-12 py-5 rounded-full hover:bg-[#3822FF] transition-colors flex items-center gap-3">
+            <a href='mailto:jakeleuthardt1@gmail,com'>
             Contact
+            </a>
             <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
               <path d="M2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l5 2.5 5-2.5V4a1 1 0 0 0-1-1H4zm9 2.383-4.708 2.354L4 5.383V12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5.383z"/>
             </svg>
