@@ -98,6 +98,48 @@ export default function FriendsPage() {
                 github.com/boykisserchan →
               </a>
             </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors">
+              <h3 className="font-instrument text-2xl mb-3">
+                <a
+                  href="https://jschere.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black hover:text-[#4633FF] transition-colors"
+                >
+                  Joaquin
+                </a>
+              </h3>
+              <a
+                href="https://jschere.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#4633FF] hover:underline text-lg"
+              >
+                jschere.com →
+              </a>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors">
+              <h3 className="font-instrument text-2xl mb-3">
+                <a
+                  href="https://foxmoss.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black hover:text-[#4633FF] transition-colors"
+                >
+                  Fox
+                </a>
+              </h3>
+              <a
+                href="https://foxmoss.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#4633FF] hover:underline text-lg"
+              >
+                foxmoss.com →
+              </a>
+            </div>
           </div>
         </section>
       </div>
