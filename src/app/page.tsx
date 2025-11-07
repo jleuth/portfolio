@@ -46,6 +46,7 @@ export default function Home() {
 
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
   const [isHoveringButton, setIsHoveringButton] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
   const hasFlippedCard = flippedCards.size > 0;
 
   const toggleCard = (index: number) => {
@@ -116,7 +117,7 @@ export default function Home() {
   };
 
   const CardBack = ({ card, size = "large", onClose }: { card: typeof cards[0], size?: "small" | "large", onClose: () => void }) => (
-    <div 
+    <div
       className={`absolute inset-0 bg-gray-900 text-white rounded-lg border border-black/[0.125] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between items-center backface-hidden rotate-y-180 ${size === "large" ? "p-5" : "p-4"}`}
       onClick={(e) => e.stopPropagation()} // Prevent card from closing when clicking on the card itself
     >
@@ -139,7 +140,7 @@ export default function Home() {
           {card.info}
         </div>
       </div>
-      <Link 
+      <Link
         href={`/${card.slug}`}
         className={`font-karla bg-white text-gray-900 rounded-full hover:bg-gray-100 transition-colors ${
           size === "large" ? "text-base px-8 py-3" : "text-sm px-6 py-2"
@@ -150,6 +151,103 @@ export default function Home() {
       </Link>
     </div>
   );
+
+  const ContactModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          <h2 className="font-instrument text-3xl mb-2 text-black">Get in Touch</h2>
+          <p className="font-karla text-gray-600 mb-8">Let&apos;s connect! Here&apos;s where you can find me:</p>
+
+          <div className="space-y-5">
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com/in/leuth/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group"
+            >
+              <div className="w-12 h-12 bg-[#0A66C2] rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </div>
+              <div className="flex-1">
+                <div className="font-karla font-semibold text-black group-hover:text-[#0A66C2] transition-colors">LinkedIn</div>
+                <div className="font-karla text-sm text-gray-600">Professional network</div>
+              </div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-400 group-hover:text-[#0A66C2] transition-colors">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+
+            {/* Email */}
+            <a
+              href="mailto:me@jleuthardt.com"
+              className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group"
+            >
+              <div className="w-12 h-12 bg-[#4633FF] rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="M3 7l9 6 9-6" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <div className="font-karla font-semibold text-black group-hover:text-[#4633FF] transition-colors">Email</div>
+                <div className="font-karla text-sm text-gray-600">me@jleuthardt.com</div>
+              </div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-400 group-hover:text-[#4633FF] transition-colors">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+
+            {/* X/Twitter */}
+            <a
+              href="https://x.com/dadsgone0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group"
+            >
+              <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </div>
+              <div className="flex-1">
+                <div className="font-karla font-semibold text-black group-hover:text-black transition-colors">X / Twitter</div>
+                <div className="font-karla text-sm text-gray-600">@dadsgone0 (unhinged)</div>
+              </div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-400 group-hover:text-black transition-colors">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    );
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-[#F8F8F8] overflow-hidden relative">
@@ -375,16 +473,21 @@ export default function Home() {
           <Link href="/friends" className="font-karla text-xl font-normal bg-black text-white px-12 py-5 rounded-full hover:bg-gray-800 transition-colors">
             My Friends
           </Link>
-          <button className="font-karla text-xl font-normal bg-[#4633FF] text-white px-12 py-5 rounded-full hover:bg-[#3822FF] transition-colors flex items-center gap-3">
-            <a href='mailto:jakeleuthardt1@gmail,com'>
+          <button
+            onClick={() => setShowContactModal(true)}
+            className="font-karla text-xl font-normal bg-[#4633FF] text-white px-12 py-5 rounded-full hover:bg-[#3822FF] transition-colors flex items-center gap-3"
+          >
             Contact
-            </a>
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l5 2.5 5-2.5V4a1 1 0 0 0-1-1H4zm9 2.383-4.708 2.354L4 5.383V12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5.383z"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="M3 7l9 6 9-6" />
             </svg>
           </button>
         </div>
       </motion.div>
+
+      {/* Contact Modal */}
+      <ContactModal isOpen={showContactModal} onClose={() => setShowContactModal(false)} />
     </main>
   );
 }
