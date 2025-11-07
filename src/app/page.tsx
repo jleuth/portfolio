@@ -372,9 +372,9 @@ export default function Home() {
         
         {/* Pill Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <button className="font-karla text-xl font-normal bg-black text-white px-12 py-5 rounded-full hover:bg-gray-800 transition-colors">
+          <Link href="/friends" className="font-karla text-xl font-normal bg-black text-white px-12 py-5 rounded-full hover:bg-gray-800 transition-colors">
             My Friends
-          </button>
+          </Link>
           <button className="font-karla text-xl font-normal bg-[#4633FF] text-white px-12 py-5 rounded-full hover:bg-[#3822FF] transition-colors flex items-center gap-3">
             <a href='mailto:jakeleuthardt1@gmail,com'>
             Contact
