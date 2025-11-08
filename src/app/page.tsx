@@ -54,6 +54,7 @@ export default function Home() {
   const [isCurrentCardFlipped, setIsCurrentCardFlipped] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const [exitingCardIndex, setExitingCardIndex] = useState<number | null>(null);
+  const [recentlyExitedCard, setRecentlyExitedCard] = useState<number | null>(null);
 
   const toggleCard = (index: number) => {
     // Don't allow flipping if another card is already flipped
@@ -127,7 +128,9 @@ export default function Home() {
     if (isCurrentCardFlipped) return; // Don't swipe while card is flipped
 
     setSwipeDirection(direction);
-    setExitingCardIndex(currentCardIndex); // Track which card is exiting
+    const exitingCard = currentCardIndex;
+    setExitingCardIndex(exitingCard); // Track which card is exiting
+    setRecentlyExitedCard(exitingCard); // Keep track to hide it when it cycles back
 
     // Update index immediately so cards move up while top card exits
     if (direction === 'left') {
@@ -141,11 +144,16 @@ export default function Home() {
     // Reset flip state for new card
     setIsCurrentCardFlipped(false);
 
-    // Clear swipe direction after animation completes
+    // Clear exiting animation state
     setTimeout(() => {
       setSwipeDirection(null);
       setExitingCardIndex(null);
     }, 300);
+
+    // Keep the exited card hidden longer to avoid jarring re-entry
+    setTimeout(() => {
+      setRecentlyExitedCard(null);
+    }, 600);
   };
 
   // Mobile stack: Get card's position in the stack (0 = top, 1 = second, etc.)
@@ -500,8 +508,13 @@ export default function Home() {
               const isTopCard = stackPosition === 0;
               const isExiting = index === exitingCardIndex && swipeDirection !== null;
 
-              // Don't render cards that are too far back or exiting (to prevent visual glitches)
+              // Don't render cards that are too far back, currently exiting, or recently exited
               if (stackPosition > 4 && !isExiting) {
+                return null;
+              }
+
+              // Hide recently exited card to prevent jarring re-entry animation
+              if (index === recentlyExitedCard && !isExiting) {
                 return null;
               }
 
