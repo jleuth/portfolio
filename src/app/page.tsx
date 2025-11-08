@@ -53,6 +53,7 @@ export default function Home() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isCurrentCardFlipped, setIsCurrentCardFlipped] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const [exitingCardIndex, setExitingCardIndex] = useState<number | null>(null);
 
   const toggleCard = (index: number) => {
     // Don't allow flipping if another card is already flipped
@@ -126,17 +127,25 @@ export default function Home() {
     if (isCurrentCardFlipped) return; // Don't swipe while card is flipped
 
     setSwipeDirection(direction);
+    setExitingCardIndex(currentCardIndex); // Track which card is exiting
 
+    // Update index immediately so cards move up while top card exits
+    if (direction === 'left') {
+      // Next card (circular)
+      setCurrentCardIndex((prev) => (prev + 1) % cards.length);
+    } else {
+      // Previous card (circular)
+      setCurrentCardIndex((prev) => (prev - 1 + cards.length) % cards.length);
+    }
+
+    // Reset flip state for new card
+    setIsCurrentCardFlipped(false);
+
+    // Clear swipe direction after animation completes
     setTimeout(() => {
-      if (direction === 'left') {
-        // Next card (circular)
-        setCurrentCardIndex((prev) => (prev + 1) % cards.length);
-      } else {
-        // Previous card (circular)
-        setCurrentCardIndex((prev) => (prev - 1 + cards.length) % cards.length);
-      }
       setSwipeDirection(null);
-    }, 200); // Wait for exit animation
+      setExitingCardIndex(null);
+    }, 300);
   };
 
   // Mobile stack: Get card's position in the stack (0 = top, 1 = second, etc.)
@@ -151,6 +160,7 @@ export default function Home() {
     top: {
       scale: 1,
       y: 0,
+      x: 0,
       opacity: 1,
       zIndex: 50,
       rotateZ: 0,
@@ -164,7 +174,8 @@ export default function Home() {
     stacked: (position: number) => ({
       scale: 1 - position * 0.05,
       y: position * 8,
-      opacity: position < 3 ? 1 : 0,
+      x: 0,
+      opacity: position < 4 ? 1 : 0,
       zIndex: 50 - position,
       rotateZ: (position - 2) * 2,
       transition: {
@@ -178,8 +189,10 @@ export default function Home() {
       x: -400,
       rotateZ: -20,
       opacity: 0,
+      zIndex: 0,
       transition: {
-        duration: 0.2,
+        duration: 0.25,
+        ease: "easeOut",
       },
     },
     // Exit right
@@ -187,14 +200,17 @@ export default function Home() {
       x: 400,
       rotateZ: 20,
       opacity: 0,
+      zIndex: 0,
       transition: {
-        duration: 0.2,
+        duration: 0.25,
+        ease: "easeOut",
       },
     },
     // Flipped state for mobile
     flipped: {
       rotateY: 180,
       scale: 1.1,
+      x: 0,
       zIndex: 100,
       transition: {
         type: "spring",
@@ -206,23 +222,13 @@ export default function Home() {
 
   const CardBack = ({ card, size = "large", onClose }: { card: typeof cards[0], size?: "small" | "large", onClose: () => void }) => (
     <div
-      className={`absolute inset-0 bg-gray-900 text-white rounded-lg border border-black/[0.125] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between items-center backface-hidden rotate-y-180 ${size === "large" ? "p-5" : "p-4"}`}
-      onClick={(e) => e.stopPropagation()} // Prevent card from closing when clicking on the card itself
+      className={`absolute inset-0 bg-gray-900 text-white rounded-lg border border-black/[0.125] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between items-center backface-hidden rotate-y-180 ${size === "large" ? "p-5" : "p-4"} cursor-pointer`}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClose();
+      }}
     >
-      {/* X Close Button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-        className="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
-
-      <div className="flex-1 flex flex-col justify-center items-center">
+      <div className="flex-1 flex flex-col justify-center items-center pointer-events-none">
         <div className={`font-instrument mb-4 ${size === "large" ? "text-3xl" : "text-2xl"}`}>{card.name}</div>
         <div className={`font-karla text-center leading-relaxed mb-5 ${size === "large" ? "text-base" : "text-sm"}`}>
           {card.info}
@@ -230,7 +236,7 @@ export default function Home() {
       </div>
       <Link
         href={`/${card.slug}`}
-        className={`font-karla bg-white text-gray-900 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap ${
+        className={`font-karla bg-white text-gray-900 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap pointer-events-auto ${
           size === "large" ? "text-base px-8 py-3" : "text-xs px-5 py-2"
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -486,13 +492,18 @@ export default function Home() {
         </div>
 
         {/* Mobile & Foldable: Swipeable Card Stack */}
-        <div className="sm:hidden relative w-full flex flex-col items-center">
+        <div className="sm:hidden w-full flex flex-col items-center">
           {/* Card Stack Container - responsive sizing for foldables */}
-          <div className="relative w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 mb-6">
+          <div className="relative w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 mb-4">
             {cards.map((card, index) => {
               const stackPosition = getStackPosition(index);
               const isTopCard = stackPosition === 0;
-              const isExiting = isTopCard && swipeDirection !== null;
+              const isExiting = index === exitingCardIndex && swipeDirection !== null;
+
+              // Don't render cards that are too far back or exiting (to prevent visual glitches)
+              if (stackPosition > 4 && !isExiting) {
+                return null;
+              }
 
               // Determine animation state
               let animateState: any = 'stacked';
@@ -506,10 +517,10 @@ export default function Home() {
 
               return (
                 <motion.div
-                  key={index}
+                  key={`card-${index}`}
                   custom={stackPosition}
                   variants={mobileStackVariants}
-                  initial="stacked"
+                  initial={false}
                   animate={animateState}
                   drag={isTopCard && !isCurrentCardFlipped ? "x" : false}
                   dragConstraints={{ left: 0, right: 0 }}
@@ -531,10 +542,11 @@ export default function Home() {
                       setIsCurrentCardFlipped(true);
                     }
                   }}
-                  className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 cursor-pointer preserve-3d"
+                  className="absolute top-0 left-1/2 w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 cursor-pointer preserve-3d"
                   style={{
                     transformStyle: 'preserve-3d',
-                    pointerEvents: isTopCard || (isTopCard && isCurrentCardFlipped) ? 'auto' : 'none',
+                    pointerEvents: isTopCard ? 'auto' : 'none',
+                    x: '-50%',
                   }}
                 >
                   {/* Front */}
@@ -560,14 +572,12 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Back */}
-                  {isTopCard && (
-                    <CardBack
-                      card={card}
-                      size="small"
-                      onClose={() => setIsCurrentCardFlipped(false)}
-                    />
-                  )}
+                  {/* Back - Always rendered to prevent flip delay */}
+                  <CardBack
+                    card={card}
+                    size="small"
+                    onClose={() => setIsCurrentCardFlipped(false)}
+                  />
                 </motion.div>
               );
             })}
