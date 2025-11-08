@@ -53,6 +53,7 @@ export default function Home() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isCurrentCardFlipped, setIsCurrentCardFlipped] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const [exitingCardIndex, setExitingCardIndex] = useState<number | null>(null);
 
   const toggleCard = (index: number) => {
     // Don't allow flipping if another card is already flipped
@@ -126,17 +127,22 @@ export default function Home() {
     if (isCurrentCardFlipped) return; // Don't swipe while card is flipped
 
     setSwipeDirection(direction);
+    setExitingCardIndex(currentCardIndex); // Track which card is exiting
 
+    // Update index immediately so cards move up while top card exits
+    if (direction === 'left') {
+      // Next card (circular)
+      setCurrentCardIndex((prev) => (prev + 1) % cards.length);
+    } else {
+      // Previous card (circular)
+      setCurrentCardIndex((prev) => (prev - 1 + cards.length) % cards.length);
+    }
+
+    // Clear swipe direction after animation completes
     setTimeout(() => {
-      if (direction === 'left') {
-        // Next card (circular)
-        setCurrentCardIndex((prev) => (prev + 1) % cards.length);
-      } else {
-        // Previous card (circular)
-        setCurrentCardIndex((prev) => (prev - 1 + cards.length) % cards.length);
-      }
       setSwipeDirection(null);
-    }, 200); // Wait for exit animation
+      setExitingCardIndex(null);
+    }, 250);
   };
 
   // Mobile stack: Get card's position in the stack (0 = top, 1 = second, etc.)
@@ -476,13 +482,13 @@ export default function Home() {
         </div>
 
         {/* Mobile & Foldable: Swipeable Card Stack */}
-        <div className="sm:hidden w-full flex flex-col items-center justify-center px-6">
+        <div className="sm:hidden w-full flex flex-col items-center px-6">
           {/* Card Stack Container - responsive sizing for foldables */}
-          <div className="relative w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 mb-6 mx-auto">
+          <div className="relative w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 mb-4 mx-auto">
             {cards.map((card, index) => {
               const stackPosition = getStackPosition(index);
               const isTopCard = stackPosition === 0;
-              const isExiting = isTopCard && swipeDirection !== null;
+              const isExiting = index === exitingCardIndex && swipeDirection !== null;
 
               // Determine animation state
               let animateState: any = 'stacked';
