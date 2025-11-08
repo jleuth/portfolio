@@ -206,23 +206,13 @@ export default function Home() {
 
   const CardBack = ({ card, size = "large", onClose }: { card: typeof cards[0], size?: "small" | "large", onClose: () => void }) => (
     <div
-      className={`absolute inset-0 bg-gray-900 text-white rounded-lg border border-black/[0.125] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between items-center backface-hidden rotate-y-180 ${size === "large" ? "p-5" : "p-4"}`}
-      onClick={(e) => e.stopPropagation()} // Prevent card from closing when clicking on the card itself
+      className={`absolute inset-0 bg-gray-900 text-white rounded-lg border border-black/[0.125] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between items-center backface-hidden rotate-y-180 ${size === "large" ? "p-5" : "p-4"} cursor-pointer`}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClose();
+      }}
     >
-      {/* X Close Button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-        className="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
-
-      <div className="flex-1 flex flex-col justify-center items-center">
+      <div className="flex-1 flex flex-col justify-center items-center pointer-events-none">
         <div className={`font-instrument mb-4 ${size === "large" ? "text-3xl" : "text-2xl"}`}>{card.name}</div>
         <div className={`font-karla text-center leading-relaxed mb-5 ${size === "large" ? "text-base" : "text-sm"}`}>
           {card.info}
@@ -230,7 +220,7 @@ export default function Home() {
       </div>
       <Link
         href={`/${card.slug}`}
-        className={`font-karla bg-white text-gray-900 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap ${
+        className={`font-karla bg-white text-gray-900 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap pointer-events-auto ${
           size === "large" ? "text-base px-8 py-3" : "text-xs px-5 py-2"
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -486,9 +476,9 @@ export default function Home() {
         </div>
 
         {/* Mobile & Foldable: Swipeable Card Stack */}
-        <div className="sm:hidden relative w-full flex flex-col items-center">
+        <div className="sm:hidden w-full flex flex-col items-center justify-center px-6">
           {/* Card Stack Container - responsive sizing for foldables */}
-          <div className="relative w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 mb-6">
+          <div className="relative w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 mb-6 mx-auto">
             {cards.map((card, index) => {
               const stackPosition = getStackPosition(index);
               const isTopCard = stackPosition === 0;
@@ -506,10 +496,10 @@ export default function Home() {
 
               return (
                 <motion.div
-                  key={index}
+                  key={`card-${index}`}
                   custom={stackPosition}
                   variants={mobileStackVariants}
-                  initial="stacked"
+                  initial={false}
                   animate={animateState}
                   drag={isTopCard && !isCurrentCardFlipped ? "x" : false}
                   dragConstraints={{ left: 0, right: 0 }}
@@ -534,7 +524,7 @@ export default function Home() {
                   className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 cursor-pointer preserve-3d"
                   style={{
                     transformStyle: 'preserve-3d',
-                    pointerEvents: isTopCard || (isTopCard && isCurrentCardFlipped) ? 'auto' : 'none',
+                    pointerEvents: isTopCard ? 'auto' : 'none',
                   }}
                 >
                   {/* Front */}
@@ -560,14 +550,12 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Back */}
-                  {isTopCard && (
-                    <CardBack
-                      card={card}
-                      size="small"
-                      onClose={() => setIsCurrentCardFlipped(false)}
-                    />
-                  )}
+                  {/* Back - Always rendered to prevent flip delay */}
+                  <CardBack
+                    card={card}
+                    size="small"
+                    onClose={() => setIsCurrentCardFlipped(false)}
+                  />
                 </motion.div>
               );
             })}
