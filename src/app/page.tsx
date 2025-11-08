@@ -160,7 +160,7 @@ export default function Home() {
     top: {
       scale: 1,
       y: 0,
-      x: 0,
+      x: '-50%',
       opacity: 1,
       zIndex: 50,
       rotateZ: 0,
@@ -174,7 +174,7 @@ export default function Home() {
     stacked: (position: number) => ({
       scale: 1 - position * 0.05,
       y: position * 8,
-      x: 0,
+      x: '-50%',
       opacity: position < 4 ? 1 : 0,
       zIndex: 50 - position,
       rotateZ: (position - 2) * 2,
@@ -210,7 +210,7 @@ export default function Home() {
     flipped: {
       rotateY: 180,
       scale: 1.1,
-      x: 0,
+      x: '-50%',
       zIndex: 100,
       transition: {
         type: "spring",
