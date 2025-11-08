@@ -49,6 +49,11 @@ export default function Home() {
   const [showContactModal, setShowContactModal] = useState(false);
   const hasFlippedCard = flippedCards.size > 0;
 
+  // Mobile card stack state
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [isCurrentCardFlipped, setIsCurrentCardFlipped] = useState(false);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+
   const toggleCard = (index: number) => {
     // Don't allow flipping if another card is already flipped
     if (hasFlippedCard && !flippedCards.has(index)) {
@@ -116,6 +121,89 @@ export default function Home() {
     return "initial";
   };
 
+  // Mobile stack: Handle swipe navigation
+  const handleSwipe = (direction: 'left' | 'right') => {
+    if (isCurrentCardFlipped) return; // Don't swipe while card is flipped
+
+    setSwipeDirection(direction);
+
+    setTimeout(() => {
+      if (direction === 'left') {
+        // Next card (circular)
+        setCurrentCardIndex((prev) => (prev + 1) % cards.length);
+      } else {
+        // Previous card (circular)
+        setCurrentCardIndex((prev) => (prev - 1 + cards.length) % cards.length);
+      }
+      setSwipeDirection(null);
+    }, 200); // Wait for exit animation
+  };
+
+  // Mobile stack: Get card's position in the stack (0 = top, 1 = second, etc.)
+  const getStackPosition = (cardIndex: number) => {
+    const diff = (cardIndex - currentCardIndex + cards.length) % cards.length;
+    return diff;
+  };
+
+  // Mobile stack: Animation variants
+  const mobileStackVariants = {
+    // Top card (interactive)
+    top: {
+      scale: 1,
+      y: 0,
+      opacity: 1,
+      zIndex: 50,
+      rotateZ: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      },
+    },
+    // Cards in stack (peeking out)
+    stacked: (position: number) => ({
+      scale: 1 - position * 0.05,
+      y: position * 8,
+      opacity: position < 3 ? 1 : 0,
+      zIndex: 50 - position,
+      rotateZ: (position - 2) * 2,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      },
+    }),
+    // Exit left
+    exitLeft: {
+      x: -400,
+      rotateZ: -20,
+      opacity: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+    // Exit right
+    exitRight: {
+      x: 400,
+      rotateZ: 20,
+      opacity: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+    // Flipped state for mobile
+    flipped: {
+      rotateY: 180,
+      scale: 1.1,
+      zIndex: 100,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 15,
+      },
+    },
+  };
+
   const CardBack = ({ card, size = "large", onClose }: { card: typeof cards[0], size?: "small" | "large", onClose: () => void }) => (
     <div
       className={`absolute inset-0 bg-gray-900 text-white rounded-lg border border-black/[0.125] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between items-center backface-hidden rotate-y-180 ${size === "large" ? "p-5" : "p-4"}`}
@@ -142,8 +230,8 @@ export default function Home() {
       </div>
       <Link
         href={`/${card.slug}`}
-        className={`font-karla bg-white text-gray-900 rounded-full hover:bg-gray-100 transition-colors ${
-          size === "large" ? "text-base px-8 py-3" : "text-sm px-6 py-2"
+        className={`font-karla bg-white text-gray-900 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap ${
+          size === "large" ? "text-base px-8 py-3" : "text-xs px-5 py-2"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -397,51 +485,104 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mobile: Single column */}
-        <div className="flex flex-col gap-6 sm:hidden">
-          {cards.map((card, index) => (
-            <motion.div
-              key={index}
-              custom={index}
-              variants={cardVariants}
-              initial="initial"
-              animate={getCardState(index)}
-              whileHover={!hasFlippedCard ? "hover" : undefined}
-              onClick={() => toggleCard(index)}
-              className={`w-40 h-60 relative cursor-pointer preserve-3d ${
-                hasFlippedCard && !flippedCards.has(index) ? 'opacity-60' : ''
-              }`}
-              style={{ 
-                transformStyle: 'preserve-3d',
-                zIndex: flippedCards.has(index) ? 100 : 1,
-                position: flippedCards.has(index) ? 'relative' : 'static',
-              }}
-            >
-              {/* Front */}
-              <div className={`absolute inset-0 bg-white rounded-lg border border-black/[0.125] flex flex-col justify-between p-4 backface-hidden ${
-                flippedCards.has(index) 
-                  ? 'shadow-[0_20px_40px_rgba(0,0,0,0.3)]' 
-                  : 'shadow-[0_4px_8px_rgba(0,0,0,0.1)]'
-              }`}>
-                <div className="font-instrument text-xl text-black">{card.label}</div>
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="w-24 h-24 flex items-center justify-center">
-                    <Image 
-                      src={card.icon} 
-                      alt={`${card.label} icon`} 
-                      width={96} 
-                      height={96} 
-                      className="w-24 h-24 object-contain"
-                    />
+        {/* Mobile & Foldable: Swipeable Card Stack */}
+        <div className="sm:hidden relative w-full flex flex-col items-center">
+          {/* Card Stack Container - responsive sizing for foldables */}
+          <div className="relative w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 mb-6">
+            {cards.map((card, index) => {
+              const stackPosition = getStackPosition(index);
+              const isTopCard = stackPosition === 0;
+              const isExiting = isTopCard && swipeDirection !== null;
+
+              // Determine animation state
+              let animateState: any = 'stacked';
+              if (isExiting) {
+                animateState = swipeDirection === 'left' ? 'exitLeft' : 'exitRight';
+              } else if (isCurrentCardFlipped && isTopCard) {
+                animateState = 'flipped';
+              } else if (isTopCard) {
+                animateState = 'top';
+              }
+
+              return (
+                <motion.div
+                  key={index}
+                  custom={stackPosition}
+                  variants={mobileStackVariants}
+                  initial="stacked"
+                  animate={animateState}
+                  drag={isTopCard && !isCurrentCardFlipped ? "x" : false}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.7}
+                  onDragEnd={(e, { offset, velocity }) => {
+                    const swipeThreshold = 100;
+                    const swipeVelocityThreshold = 500;
+
+                    if (Math.abs(offset.x) > swipeThreshold || Math.abs(velocity.x) > swipeVelocityThreshold) {
+                      if (offset.x > 0) {
+                        handleSwipe('right');
+                      } else {
+                        handleSwipe('left');
+                      }
+                    }
+                  }}
+                  onClick={() => {
+                    if (isTopCard && !isCurrentCardFlipped) {
+                      setIsCurrentCardFlipped(true);
+                    }
+                  }}
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-72 min-[480px]:w-56 min-[480px]:h-80 cursor-pointer preserve-3d"
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    pointerEvents: isTopCard || (isTopCard && isCurrentCardFlipped) ? 'auto' : 'none',
+                  }}
+                >
+                  {/* Front */}
+                  <div className={`absolute inset-0 bg-white rounded-lg border border-black/[0.125] flex flex-col justify-between p-5 min-[480px]:p-6 backface-hidden ${
+                    isTopCard
+                      ? 'shadow-[0_8px_16px_rgba(0,0,0,0.15)]'
+                      : `shadow-[0_${stackPosition * 2}px_${stackPosition * 4}px_rgba(0,0,0,0.1)]`
+                  }`}>
+                    <div className="font-instrument text-xl min-[480px]:text-2xl text-black">{card.label}</div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <div className="w-28 h-28 min-[480px]:w-32 min-[480px]:h-32 flex items-center justify-center">
+                        <Image
+                          src={card.icon}
+                          alt={`${card.label} icon`}
+                          width={112}
+                          height={112}
+                          className="w-28 h-28 min-[480px]:w-32 min-[480px]:h-32 object-contain"
+                        />
+                      </div>
+                    </div>
+                    <div className="self-end font-instrument text-xl min-[480px]:text-2xl italic transform rotate-180 text-black">
+                      {card.label}
+                    </div>
                   </div>
-                </div>
-                <div className="self-end font-instrument text-lg italic transform rotate-180 text-black">
-                  {card.label}
-                </div>
-              </div>
-              <CardBack card={card} size="small" onClose={() => toggleCard(index)} />
-            </motion.div>
-          ))}
+
+                  {/* Back */}
+                  {isTopCard && (
+                    <CardBack
+                      card={card}
+                      size="small"
+                      onClose={() => setIsCurrentCardFlipped(false)}
+                    />
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Swipe Hint */}
+          <div className="flex items-center gap-2 text-gray-500 text-sm min-[480px]:text-base font-karla">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="min-[480px]:w-5 min-[480px]:h-5">
+              <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
+            </svg>
+            <span>Swipe to explore</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="min-[480px]:w-5 min-[480px]:h-5">
+              <path d="M5 12h14M19 12l-7-7M19 12l-7 7"/>
+            </svg>
+          </div>
         </div>
       </div>
 
