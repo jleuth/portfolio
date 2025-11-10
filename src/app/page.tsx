@@ -7,36 +7,36 @@ import Image from "next/image";
 
 export default function Home() {
   const cards = [
-    { 
-      label: "Fr", 
+    {
+      label: "Fr",
       name: "Frantic",
       info: "Frantic - An I.T. infra management company I founded and ran",
       slug: "frantic",
       icon: "/frantic-icon.svg"
     },
-    { 
-      label: "Fu", 
+    {
+      label: "Fu",
       name: "Future Computing",
       info: "Future Computing - Nonprofit organization I currently run",
       slug: "future-computing",
       icon: "/future-computing-icon.svg"
     },
-    { 
-      label: "Fi", 
-      name: "Film",
-      info: "Film - My film projects and creative art work",
-      slug: "film",
-      icon: "/film-icon.svg"
+    {
+      label: "Vi",
+      name: "Videos",
+      info: "Videos - My film projects, YouTube channel, and creative video content",
+      slug: "videos",
+      icon: "/videos-icon.svg"
     },
-    { 
-      label: "Yt", 
-      name: "YouTube",
-      info: "YouTube - My YouTube channel and video content",
-      slug: "youtube",
-      icon: "/youtube-icon.svg"
+    {
+      label: "Co",
+      name: "Code",
+      info: "Code - Non-business coding projects and experiments",
+      slug: "code",
+      icon: "/code-icon.svg"
     },
-    { 
-      label: "We", 
+    {
+      label: "We",
       name: "Web",
       info: "Web - Other web projects and development work I've done",
       slug: "web",
