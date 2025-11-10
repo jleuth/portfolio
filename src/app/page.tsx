@@ -79,7 +79,7 @@ export default function Home() {
               ×
             </button>
 
-            <h2 className="font-mono text-3xl mb-2 text-black font-bold">// CONTACT ME</h2>
+            <h2 className="font-mono text-3xl mb-2 text-black font-bold">{'// CONTACT ME'}</h2>
             <p className="font-karla text-gray-700 mb-6">hit me up wherever:</p>
 
             <div className="space-y-3">
