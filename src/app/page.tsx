@@ -47,6 +47,7 @@ export default function Home() {
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
   const [isHoveringButton, setIsHoveringButton] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
+  const [showButtonsModal, setShowButtonsModal] = useState(false);
   const hasFlippedCard = flippedCards.size > 0;
 
   const toggleCard = (index: number) => {
@@ -152,6 +153,88 @@ export default function Home() {
     </div>
   );
 
+  const ButtonsModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+    if (!isOpen) return null;
+
+    const buttons = [
+      { name: "White Mono", url: "https://files.catbox.moe/grc5yk.png" },
+      { name: "White Color", url: "https://files.catbox.moe/xp42cu.png" },
+      { name: "Black Mono", url: "https://files.catbox.moe/y7tuhk.png" },
+      { name: "Black Color", url: "https://files.catbox.moe/rft4od.png" },
+    ];
+
+    const copyToClipboard = (text: string) => {
+      navigator.clipboard.writeText(text);
+    };
+
+    return (
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          className="bg-white rounded-2xl p-8 max-w-2xl w-full shadow-2xl max-h-[90vh] overflow-y-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          <h2 className="font-instrument text-3xl mb-2 text-black">88x31 Buttons</h2>
+          <p className="font-karla text-gray-600 mb-6">Copy the embed code to add a button to your site:</p>
+
+          <div className="space-y-4">
+            {buttons.map((button, index) => {
+              const embedCode = `<a href="https://jleuthardt.com" target="_blank"><img src="${button.url}" alt="jleuthardt.com" width="88" height="31" /></a>`;
+
+              return (
+                <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex-1">
+                    <div className="font-karla font-semibold text-black mb-2">{button.name}</div>
+                    <div className="relative">
+                      <code className="block text-xs bg-gray-100 p-3 rounded font-mono text-gray-700 break-all pr-10">
+                        {embedCode}
+                      </code>
+                      <button
+                        onClick={() => copyToClipboard(embedCode)}
+                        className="absolute top-2 right-2 p-1.5 bg-white hover:bg-gray-200 rounded transition-colors"
+                        title="Copy to clipboard"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex-shrink-0 bg-gray-200 p-2 rounded">
+                    <img
+                      src={button.url}
+                      alt={button.name}
+                      width={88}
+                      height={31}
+                      className="block"
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
+      </div>
+    );
+  };
+
   const ContactModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
     if (!isOpen) return null;
 
@@ -243,6 +326,31 @@ export default function Home() {
                 <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
+
+            {/* 88x31 Buttons */}
+            <button
+              onClick={() => {
+                onClose();
+                setShowButtonsModal(true);
+              }}
+              className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group w-full text-left"
+            >
+              <div className="w-12 h-12 bg-[#FF6B35] rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                  <rect x="3" y="3" width="7" height="7" rx="1"/>
+                  <rect x="14" y="3" width="7" height="7" rx="1"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1"/>
+                  <rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+              </div>
+              <div className="flex-1">
+                <div className="font-karla font-semibold text-black group-hover:text-[#FF6B35] transition-colors">88x31 Buttons</div>
+                <div className="font-karla text-sm text-gray-600">Retro web buttons</div>
+              </div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-400 group-hover:text-[#FF6B35] transition-colors">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
           </div>
         </motion.div>
       </div>
@@ -488,6 +596,9 @@ export default function Home() {
 
       {/* Contact Modal */}
       <ContactModal isOpen={showContactModal} onClose={() => setShowContactModal(false)} />
+
+      {/* 88x31 Buttons Modal */}
+      <ButtonsModal isOpen={showButtonsModal} onClose={() => setShowButtonsModal(false)} />
     </main>
   );
 }
